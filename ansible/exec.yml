@@ -1,0 +1,7 @@
+- hosts: localhost
+  roles: 
+    # - { role: build_tools_apt, tags: [build_tools_apt] }
+    # - { role: mysql, tags: [mysql] }
+    # - { role: httpd, tags: [httpd] }
+    - { role: php, tags: [php] }
+

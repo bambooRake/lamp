@@ -1,0 +1,10 @@
+packages_apt:
+  - { name: build-essential }
+  - { name: libexpat1-dev }
+  - { name: libpcre3 }
+  - { name: libpcre3-dev }
+  - { name: libxml2-dev }
+  - { name: libssl-dev }
+  - { name: libncurses5-dev }
+  - { name: cmake }
+  - { name: autoconf }

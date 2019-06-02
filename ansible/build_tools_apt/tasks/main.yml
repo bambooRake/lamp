@@ -1,0 +1,16 @@
+- name: apt update
+  become: true
+  apt:
+    update_cache: yes
+
+- name: apt upgrade
+  become: true
+  apt:
+    upgrade: dist
+
+- name: apt Install build_tools
+  become: true
+  apt:
+    name={{ item.name }} update_cache=yes cache_valid_time=3600
+  with_items:
+    "{{ packages_apt }}"

@@ -100,10 +100,42 @@ make
 sudo make install
 cd ..
 
+mkdir mysql_files
+chmod 750 mysql_files 
+
+chown -R user1:user1 install_path
+bin/mysqld --initialize --user=user1
+vim my.cnf
+[client]
+port=3306
+socket=インストール/mysql.sock
+/usr/local/mysql/mysql.sock
+
+[mysqld]
+port=3306
+socket=インストール/mysql.sock
+/usr/local/mysql/mysql.sock
+
+T)s2yACAGQ6t
+
+mysqld_safe --user=user1 &
+mysql -u root -p -S インストール/mysql.sock
+exit;
+
+mysqladmin -uroot -p shutdown
+
+ALTER USER 'root'@'localhost' identified BY 'password';
+
 echo "export PATH=\$PATH:/usr/local/mysql/bin" >> ~/.bashrc
 source ~/.bashrc
 
 git clone git://github.com/mysql/mysql-server.git
+
+mysqld --initialize
+mysqld_safe &
+mysql_secure_installation
+
+http://tech-karte.hatenablog.com/entry/2016/05/11/142945
 ```
 
 補足：
@@ -166,7 +198,7 @@ https://qiita.com/Yasuo_Nakata/items/80b5af4cc5d91f972e4b>
 <https://qiita.com/MasatoYoshioka@github/items/e542f39a6f1a3bc1f71e>
 <https://qiita.com/k_o_gj/items/01191e19cbda4a93ba58>
 
-pecl channel-update pecl.php.net 
+sudo pecl channel-update pecl.php.net 
 opensslのインストール
 php.iniに下記を追加
 extension=/usr/local/lib/php/extensions/no-debug-zts-20160303/openssl.so
@@ -296,4 +328,12 @@ Configure command: ./configure  '--prefix=/usr/local/mysql' '--localstatedir=/us
 ```
 
 
+
+```
+sudo apt install -y ansible;
+sudo sh -c "echo '[local]' >> /etc/ansible/hosts";
+sudo sh -c "echo 'localhost ansible_connection=local' >> /etc/ansible/hosts";
+sudo ansible-playbook -K ansible/exec.yml;
+
+```
 
