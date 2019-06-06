@@ -1,23 +1,23 @@
-- name: Creates Work Directory
+- name: [mysql]Creates Work Directory
   file:
     path: /tmp/work_build
     state: directory
 
-- name: Extract mysql into /tmp/work_build
+- name: [mysql]Extract mysql into /tmp/work_build
   unarchive:
     src: ../tar_packages/mysql-{{ mysql_ver }}.tar.gz
     dest: /tmp/work_build
 
-- name: cmake mysql
+- name: [mysql]cmake mysql
   shell: cmake -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci -DWITH_INNOBASE_STORAGE_ENGINE=1 -DCMAKE_INSTALL_PREFIX=/usr/local/opt/mysql/mysql-{{mysql_ver}} -DFORCE_INSOURCE_BUILD=1 -DDOWNLOAD_BOOST=1 -DWITH_BOOST=./work_boost
   args:
     chdir: /tmp/work_build/mysql-{{ mysql_ver }}
 
-- name: Build mysql
+- name: [mysql]Build mysql
   make:
     chdir: /tmp/work_build/mysql-{{ mysql_ver }}
 
-- name: Install mysql
+- name: [mysql]Install mysql
   make:
     chdir: /tmp/work_build/mysql-{{ mysql_ver }}
     target: install

@@ -1,14 +1,14 @@
-- name: apt update
+- name: [apt]apt update
   become: true
   apt:
     update_cache: yes
 
-- name: apt upgrade
+- name: [apt]apt upgrade
   become: true
   apt:
     upgrade: dist
 
-- name: apt Install build_tools
+- name: [apt]apt Install build_tools
   become: true
   apt:
     name={{ item.name }} update_cache=yes cache_valid_time=3600

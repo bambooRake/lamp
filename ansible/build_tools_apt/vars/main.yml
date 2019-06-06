@@ -8,3 +8,7 @@ packages_apt:
   - { name: libncurses5-dev }
   - { name: cmake }
   - { name: autoconf }
+  - { name: bison }
+  - { name: libghc-curl-dev }
+  - { name: libjpeg-dev }
+  - { name: libpng-dev }

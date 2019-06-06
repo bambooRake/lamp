@@ -1,0 +1,15 @@
+// mysql 最新版
+https://dev.mysql.com/downloads/mysql/
+// mysql 過去アーカイブ
+https://downloads.mysql.com/archives/community/
+
+// httpd 最新版
+http://httpd.apache.org/download.cgi
+// httpd 過去アーカイブ
+https://archive.apache.org/dist/
+
+
+// php 最新版
+https://www.php.net/downloads.php
+// php 過去アーカイブ
+https://www.php.net/releases/
