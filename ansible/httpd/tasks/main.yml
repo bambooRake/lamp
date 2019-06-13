@@ -1,71 +1,77 @@
-- name: [httpd]Creates Work Directory
+- name: httpd:Creates Work Directory
   file:
     path: /tmp/work_build
     state: directory
 
-- name: [httpd]Extract apr into /tmp/work_build
+- name: httpd:Extract apr into /tmp/work_build
   unarchive:
     src: ../tar_packages/apr-{{ apr_ver }}.tar.gz
     dest: /tmp/work_build
 
-- name: [httpd]Fix apr_config
+- name: httpd:Fix apr_config
   replace:
     path: /tmp/work_build/apr-{{ apr_ver }}/configure
     regexp: '\$RM \"\$cfgfile\"'
     replace: '$RM -f "$cfgfile"'
 
-- name: [httpd]./configure apr
-  shell: ./configure -prefix=/usr/local/opt/apr/apr-{{ apr_ver }}
+- name: httpd:./configure apr
+  shell: ./configure -prefix=/usr/local/opt/apr-{{ apr_ver }}
   args:
     chdir: /tmp/work_build/apr-{{ apr_ver }}
 
-- name: [httpd]Build apr
+- name: httpd:Build apr
   make:
     chdir: /tmp/work_build/apr-{{ apr_ver }}
+    params:
+      NUM_THREADS: 4
 
-- name: [httpd]Install apr
+- name: httpd:Install apr
   make:
     chdir: /tmp/work_build/apr-{{ apr_ver }}
     target: install
   become: yes
 
-- name: [httpd]Extract apr-util into /tmp/work_build
+- name: httpd:Extract apr-util into /tmp/work_build
   unarchive:
     src: ../tar_packages/apr-util-{{ apr_util_ver }}.tar.gz
     dest: /tmp/work_build
 
-- name: [httpd]./configure apr-util
-  shell: ./configure -prefix=/usr/local/opt/apr-util/apr-util-{{ apr_util_ver }} -with-apr=/usr/local/opt/apr/apr-{{ apr_ver }}
+- name: httpd:./configure apr-util
+  shell: ./configure -prefix=/usr/local/opt/apr-util-{{ apr_util_ver }} -with-apr=/usr/local/opt/apr-{{ apr_ver }}
   args:
     chdir: /tmp/work_build/apr-util-{{ apr_util_ver }}
 
-- name: [httpd]Build apr-util
+- name: httpd:Build apr-util
   make:
     chdir: /tmp/work_build/apr-util-{{ apr_util_ver }}
+    params:
+      NUM_THREADS: 4
 
-- name: [httpd]Install apr-util
+- name: httpd:Install apr-util
   make:
     chdir: /tmp/work_build/apr-util-{{ apr_util_ver }}
     target: install
   become: yes
 
-- name: [httpd]Extract httpd into /tmp/work_build
+- name: httpd:Extract httpd into /tmp/work_build
   unarchive:
     src: ../tar_packages/httpd-{{ item }}.tar.gz
     dest: /tmp/work_build
   with_items:
     - "{{ httpd_ver }}"
 
-- name: [httpd]./configure httpd
-  shell: ./configure -prefix=/usr/local/opt/httpd/httpd-{{ httpd_ver }} -with-apr=/usr/local/opt/apr/apr-{{ apr_ver }} -with-apr-util=/usr/local/opt/apr-util/apr-util-{{ apr_util_ver }}
+- name: httpd:./configure httpd
+  shell: ./configure -prefix=/usr/local/opt/httpd-{{ httpd_ver }} -with-apr=/usr/local/opt/apr-{{ apr_ver }} -with-apr-util=/usr/local/opt/apr-util-{{ apr_util_ver }}
   args:
     chdir: /tmp/work_build/httpd-{{ httpd_ver }}
 
-- name: [httpd]Build httpd
+- name: httpd:Build httpd
   make:
     chdir: /tmp/work_build/httpd-{{ httpd_ver }}
+    params:
+      NUM_THREADS: 4
 
-- name: [httpd]Install httpd
+- name: httpd:Install httpd
   make:
     chdir: /tmp/work_build/httpd-{{ httpd_ver }}
     target: install

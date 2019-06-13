@@ -1,5 +1,5 @@
 apr_ver: 1.7.0
 apr_util_ver: 1.6.1
-httpd_ver: 2.4.35
-mysql_ver: 8.0.15
-php_ver: 7.2.11
+httpd_ver: 2.4.39
+mysql_ver: 8.0.16
+php_ver: 7.1.29

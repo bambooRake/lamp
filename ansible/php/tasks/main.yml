@@ -1,24 +1,38 @@
-- name: [php]Creates Work Directory
+- name: php:Creates Work Directory
   file:
     path: /tmp/work_build
     state: directory
 
-- name: [php]Extract php into /tmp/work_build
+- name: php:Extract php into /tmp/work_build
   unarchive:
     src: ../tar_packages/php-{{ php_ver }}.tar.gz
-    dest: /tmp/work_builds
+    dest: /tmp/work_build
 
-- name: [php]./configure php
-  shell: ./configure --with-apxs2=/usr/local/opt/httpd/httpd-{{ httpd_ver }}/bin/apxs --disable-cgi --enable-mbstring --enable-mbregex --with-pdo-mysql=mysqlnd --with-zlib-dir=/usr/lib --prefix=/usr/local/opt/php/php-{{ php_ver }} --with-openssl --with-curl --with-gd --with-jpeg-dir=/usr/local/lib/ --enbale-intl --enable-zip
+- name: php:./configure php
+  shell: ./configure --with-apxs2=/usr/local/opt/httpd-{{ httpd_ver }}/bin/apxs --disable-cgi --enable-mbstring --enable-mbregex --with-pdo-mysql=mysqlnd --with-zlib-dir=/usr/lib --prefix=/usr/local/opt/php-{{ php_ver }} --with-openssl --with-curl --with-gd --with-jpeg-dir=/usr/local/lib/ --enable-intl --enable-zip
   args:
-    chdir: /tmp/work_build/php-src
+    chdir: /tmp/work_build/php-{{ php_ver }}
+  environment:
+    PATH: "/usr/local/opt/bison@2.7/bin:{{ ansible_env.PATH }}"
+    PKG_CONFIG_PATH: "/usr/local/opt/openssl@1.1/lib/pkgconfig:/usr/local/opt/icu4c/lib/pkgconfig"
 
-- name: [php]Build php
+- name: php:Build php
   make:
     chdir: /tmp/work_build/php-{{ php_ver }}
+    params:
+      NUM_THREADS: 4
+      CXX: g++ -std=c++11
+  environment:
+    PKG_CONFIG_PATH: "/usr/local/opt/openssl@1.1/lib/pkgconfig:/usr/local/opt/icu4c/lib/pkgconfig"
 
-- name: [php]Install php
+- name: php:Install php
   make:
     chdir: /tmp/work_build/php-{{ php_ver }}
     target: install
+  become: yes
+
+- name:  php:Pecl install XDebug
+  pear:
+    name: pecl/json_post
+    state: present
   become: yes

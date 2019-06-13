@@ -333,7 +333,7 @@ Configure command: ./configure  '--prefix=/usr/local/mysql' '--localstatedir=/us
 sudo apt install -y ansible;
 sudo sh -c "echo '[local]' >> /etc/ansible/hosts";
 sudo sh -c "echo 'localhost ansible_connection=local' >> /etc/ansible/hosts";
-sudo ansible-playbook -K ansible/exec.yml;
+ansible-playbook -K ansible/exec.yml;
 
 ```
 

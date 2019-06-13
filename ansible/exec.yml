@@ -1,9 +1,9 @@
 - hosts: localhost
   vars_files:
-    - ../vars/common.yml
+    - ./vars/common.yml
   roles: 
     # - { role: build_tools_apt, tags: [build_tools_apt] }
-    # - { role: mysql, tags: [mysql] }
-    # - { role: httpd, tags: [httpd] }
+    - { role: mysql, tags: [mysql] }
+    - { role: httpd, tags: [httpd] }
     - { role: php, tags: [php] }
 
